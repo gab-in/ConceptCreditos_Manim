@@ -33,8 +33,7 @@ class main(Scene):
 
         # ------------------------ ANIMAÇÕES ---------------------
         # Nomes e Cargos
-        self.add(creditos.move_to(DOWN*10))
-        self.play(creditos.animate.move_to(ORIGIN),run_time=2.5)
+        self.play(AnimationGroup(FadeIn(creditos.move_to(ORIGIN))))
             
         
 
