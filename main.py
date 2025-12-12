@@ -2,6 +2,7 @@ from manim import *
 from manim_slides import Slide
 
 def escalaFonte(texto):
+    # Escala o código para resolver um bug interno do Manim com Fontes customizadas
     out = Text(texto, font_size=72)
     out.scale(1/3)
 
@@ -9,20 +10,32 @@ def escalaFonte(texto):
 
 def blocoCargo(cargo,nome):
     cargoText=escalaFonte(cargo)
-    cargoText.font_size=20
+    cargoText.font_size=26
 
-    nomeText=escalaFonte(nome)
-    nomeText.font_size=10
-    nomeText.next_to(cargoText,DOWN)
+    nomes = nome.split("\n")
+    nome_objs = []
 
-    return Group(cargoText,nomeText)
+    dist = cargoText    # Distancia
+
+    # Isso aqui é uma gambiarra para poder centralizar nomes separados por "\n" para casos de um cargo com vários nomes
+    for linha in nomes:                                  # Separou anteriormente cada nome
+        nomeText = escalaFonte(linha) 
+        nomeText.font_size = 16
+        
+        # Centraliza horizontalmente
+        nomeText.move_to([cargoText.get_x(), dist.get_bottom()[1] - 0.3, 0])
+
+        nome_objs.append(nomeText)  # Coloca no vetor
+        dist = nomeText # Atualiza distancia de referencia para esse novo nome já ajeitado
+
+    return Group(cargoText, *nome_objs)
 
 def blocoQrCode(preview,qrCode):
     qrCode.scale(0.2)
 
     previewQrCode=escalaFonte(preview)
     previewQrCode.color="#AA77C7"
-    previewQrCode.font_size=20
+    previewQrCode.font_size=26
     previewQrCode.next_to(qrCode,UP)
 
     return Group(qrCode,previewQrCode)
@@ -37,12 +50,13 @@ class main(Scene):
         # Os nomes e cargos em si
         titulo=escalaFonte("Creditos")
         titulo.color="#AA77C7"
+        titulo.font_size=26
 
         blocos=[ 
                  blocoCargo("Diretor","Alguém Ai"),
                  blocoCargo("Tutor","Fulano de tal"),
                  blocoCargo("Redator","Fulaninho"),
-                 blocoCargo("Manimators","Aquele cara \n\nAquele outro cara lá")
+                 blocoCargo("Manimators","Aquele cara \nAquele outro cara")
                 ]
         
         creditos=Group(titulo)
@@ -62,7 +76,7 @@ class main(Scene):
         qrCodes=Group()
         dist=blocos[0]
         for bloco in blocos:
-            bloco.move_to(dist.get_bottom()+DOWN*1.5)
+            bloco.move_to(dist.get_bottom()+DOWN*2)
             qrCodes.add(bloco)
             dist=bloco
 
