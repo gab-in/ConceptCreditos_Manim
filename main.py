@@ -23,7 +23,8 @@ class main(Scene):
         self.play(AnimationGroup(
             FadeIn(triangle.scale(0.4)),
             triangle.animate.move_to(rota1.point_from_proportion(0)),
-            run_time=2
+            run_time=1,
+            rate_func=linear
         ))
         
         # Rotaciona o Triangulo e da FadeIn() no círculo
@@ -31,7 +32,7 @@ class main(Scene):
             MoveAlongPath(triangle, rota1), 
             FadeIn(circle.scale(0.4)),
             circle.animate.move_to(rota1.point_from_proportion(1/3)),
-            run_time=2.5,
+            run_time=2,
             rate_func=linear
         ))
 
@@ -41,7 +42,7 @@ class main(Scene):
             MoveAlongPath(circle,rota2),
             FadeIn(square.scale(0.4)),
             square.animate.move_to(rota1.point_from_proportion(2/3)),
-            run_time=2.5,
+            run_time=2,
             rate_func=linear
         ))
 
@@ -51,7 +52,7 @@ class main(Scene):
                 MoveAlongPath(triangle,rota1),
                 MoveAlongPath(circle,rota2),
                 MoveAlongPath(square,rota3),
-                run_time=2.5,
+                run_time=2,
                 rate_func=linear
             ))
 
