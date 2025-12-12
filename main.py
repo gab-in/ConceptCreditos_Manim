@@ -1,54 +1,26 @@
 from manim import *
 from manim_slides import Slide
 
-def blocoCargo(cargo,nome):
-    cargoText=Text(cargo,font_size=20)
-    nomeText=Text(nome,font_size=10)
-    nomeText.next_to(cargoText,DOWN)
-
-    return Group(cargoText,nomeText)
-
 class main(Scene):
     def construct(self):
         # ------------------------- CONFIGURAÇÕES? -------------------------
         self.camera.background_color="#1E1E1E"
         
         # ------------------------- OBJETOS ---------------------------
-        # Os nomes e cargos em si
-        titulo=Tex("Creditos")
-
-        blocos=[ 
-                 blocoCargo("Diretor","Alguém Ai"),
-                 blocoCargo("Tutor","Fulano de tal"),
-                 blocoCargo("Redator","Fulaninho"),
-                 blocoCargo("Manimators","Aquele cara \n\nAquele outro cara lá")
-                ]
-        
-        creditos=Group(titulo)
-        dist=titulo
-        for bloco in blocos:
-            bloco.move_to(dist.get_bottom() + DOWN)
-            creditos.add(bloco)
-            dist=bloco
-            
         # MObjetos animados como menu ps2
-        triangle = Triangle(color="#e07a5f", fill_opacity=1).move_to(RIGHT*6+UP*2)
-        circle = Circle(color="#87c2a5", fill_opacity=1).move_to(UP*3)
-        square = Square(color="#525893", fill_opacity=1).move_to(DOWN*2) #LEFT*6+DOWN*2
+        triangle = Triangle(color="#e07a5f", fill_opacity=1).move_to(LEFT*6 + DOWN*2)
+        circle = Circle(color="#87c2a5", fill_opacity=1).move_to(RIGHT*6 + UP*2)
+        square = Square(color="#525893", fill_opacity=1).move_to(LEFT*6 + UP*2) #LEFT*6+DOWN*2
         #.scale(0.4)
 
         # Aqui as rotas que o MObjects vão tomar
-        rota1= Circle(radius=1.5).shift(RIGHT*3)
+        rota1= Circle(radius=1.5)
         rota2 = rota1.copy().rotate(2*PI/3)
         rota3= rota1.copy().rotate(4*PI/3)
 
         # ------------------------ ANIMAÇÕES ---------------------
-        self.add(creditos.move_to(DOWN*10))
-        self.play(creditos.animate.move_to(ORIGIN),run_time=2.5)
-
-        # Nome+Cargos vai para a direita e FadeIn() dos MObjects 
+        #  FadeIn() dos MObjects 
         self.play(AnimationGroup(
-            creditos.animate.move_to(LEFT*3), 
             FadeIn(triangle.scale(0.4)),
             triangle.animate.move_to(rota1.point_from_proportion(0)),
             run_time=2
