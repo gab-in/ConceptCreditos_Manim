@@ -1,9 +1,18 @@
 from manim import *
 from manim_slides import Slide
 
+def escalaFonte(texto):
+    out = Text(texto, font_size=72)
+    out.scale(1/3)
+
+    return out
+
 def blocoCargo(cargo,nome):
-    cargoText=Text(cargo,font_size=20)
-    nomeText=Text(nome,font_size=10)
+    cargoText=escalaFonte(cargo)
+    cargoText.font_size=20
+
+    nomeText=escalaFonte(nome)
+    nomeText.font_size=10
     nomeText.next_to(cargoText,DOWN)
 
     return Group(cargoText,nomeText)
@@ -12,10 +21,13 @@ class main(Scene):
     def construct(self):
         # ------------------------- CONFIGURAÇÕES? -------------------------
         self.camera.background_color="#1E1E1E"
+        Text.set_default(font = "Manrope")
         
         # ------------------------- OBJETOS ---------------------------
         # Os nomes e cargos em si
-        titulo=Tex("Creditos")
+        titulo=escalaFonte("Creditos")
+        titulo.color="#AA77C7"
+        titulo.font_size=48
 
         blocos=[ 
                  blocoCargo("Diretor","Alguém Ai"),
@@ -51,7 +63,8 @@ class main(Scene):
             creditos.animate.move_to(LEFT*3), 
             FadeIn(triangle.scale(0.4)),
             triangle.animate.move_to(rota1.point_from_proportion(0)),
-            run_time=2
+            run_time=1,
+            rate_func=linear
         ))
         
         # Rotaciona o Triangulo e da FadeIn() no círculo
@@ -59,7 +72,7 @@ class main(Scene):
             MoveAlongPath(triangle, rota1), 
             FadeIn(circle.scale(0.4)),
             circle.animate.move_to(rota1.point_from_proportion(1/3)),
-            run_time=2.5,
+            run_time=2,
             rate_func=linear
         ))
 
@@ -69,7 +82,7 @@ class main(Scene):
             MoveAlongPath(circle,rota2),
             FadeIn(square.scale(0.4)),
             square.animate.move_to(rota1.point_from_proportion(2/3)),
-            run_time=2.5,
+            run_time=2,
             rate_func=linear
         ))
 
@@ -79,7 +92,7 @@ class main(Scene):
                 MoveAlongPath(triangle,rota1),
                 MoveAlongPath(circle,rota2),
                 MoveAlongPath(square,rota3),
-                run_time=2.5,
+                run_time=2,
                 rate_func=linear
             ))
 
