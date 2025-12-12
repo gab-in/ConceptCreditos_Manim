@@ -41,7 +41,7 @@ class main(Scene):
         # Os nomes e cargos em si
         titulo=escalaFonte("Creditos")
         titulo.color="#AA77C7"
-        titulo.font_size=26
+        titulo.font_size=30
 
         blocos=[ 
                  blocoCargo("Diretor","Alguém Ai"),
