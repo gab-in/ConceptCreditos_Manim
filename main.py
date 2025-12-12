@@ -52,14 +52,16 @@ class main(Scene):
             qrCodes.add(bloco)
             dist=bloco
 
-        # Finalmente, as figuras geométricas da logo do Manim
-        triangle = Triangle(color="#e07a5f", fill_opacity=1).move_to(LEFT*6+DOWN*2)
-        circle1 = Circle(color="#87c2a5", fill_opacity=1).move_to(LEFT*6+UP*3)
-        circle2 = Circle(color="#c7a444", fill_opacity=1).move_to(RIGHT*6+DOWN*3)
-        square = Square(color="#525893", fill_opacity=1).move_to(RIGHT*6+UP*2)
-        grupoFlutuanteDireito=VGroup(triangle,circle1)
-        grupoFlutuanteEsquerdo=VGroup(circle2,square)
-        #.scale(0.8)
+        # MObjetos animados como menu ps2
+        triangle = Triangle(color="#e07a5f", fill_opacity=1).move_to(LEFT*2 + DOWN*2)
+        circle = Circle(color="#87c2a5", fill_opacity=1).move_to(RIGHT*2 + UP*2)
+        square = Square(color="#525893", fill_opacity=1).move_to(LEFT*3 + DOWN*3) #LEFT*6+DOWN*2
+        #.scale(0.4)
+
+        # Aqui as rotas que o MObjects vão tomar
+        rota1= Circle(radius=1.5)
+        rota2 = rota1.copy().rotate(2*PI/3)
+        rota3= rota1.copy().rotate(4*PI/3)
 
         # ------------------------ ANIMAÇÕES ---------------------
         # Nomes e Cargos
@@ -67,26 +69,43 @@ class main(Scene):
         self.play(creditos.animate.move_to(ORIGIN),run_time=2.5)
 
         # Aqui tem que acontece o FadeIn() dos QR Codes ao mesmo tempo que os nomes e cargos vão para a direita
-        self.play(creditos.animate.move_to(RIGHT*2.5), FadeIn(qrCodes.move_to(LEFT*2.5)), run_time=2)
+        self.play(creditos.animate.move_to(RIGHT*4), FadeIn(qrCodes.move_to(LEFT*4)), run_time=2)
 
-        # Aqui as figuras geométricas do Manim vão aparecer
-        self.play(Create(grupoFlutuanteDireito.scale(0.8)),Create(grupoFlutuanteEsquerdo.scale(0.8)),run_time=2)
+         #  FadeIn() dos MObjects 
+        self.play(AnimationGroup(
+            FadeIn(triangle.scale(0.4)),
+            triangle.animate.move_to(rota1.point_from_proportion(0)),
+            run_time=2
+        ))
+        
+        # Rotaciona o Triangulo e da FadeIn() no círculo
+        self.play(AnimationGroup(
+            MoveAlongPath(triangle, rota1), 
+            FadeIn(circle.scale(0.4)),
+            circle.animate.move_to(rota1.point_from_proportion(1/3)),
+            run_time=2.5,
+            rate_func=linear
+        ))
 
-        movimentos = [
-                        (UP*0.5, DOWN*0.5),
-                        (DOWN*0.5, UP*0.5),
-                        (DOWN*0.5, UP*0.5),
-                        (UP*0.5, DOWN*0.5),
-                        ]
-        for i in range(2):  # repete o ciclo
-            for mov_dir, mov_esq in movimentos:
-                self.play(
-                    AnimationGroup(
-                        grupoFlutuanteDireito.animate.shift(mov_dir),
-                        grupoFlutuanteEsquerdo.animate.shift(mov_esq),
-                        run_time=3
-                    )
-                )
+        # Rotaciona Triangulo e Circulo e da FadeIn() no quadrado
+        self.play(AnimationGroup(
+            MoveAlongPath(triangle,rota1),
+            MoveAlongPath(circle,rota2),
+            FadeIn(square.scale(0.4)),
+            square.animate.move_to(rota1.point_from_proportion(2/3)),
+            run_time=2.5,
+            rate_func=linear
+        ))
+
+        # Rotaciona Triangulo, Circulo e Quadrado
+        for i in range(3):
+            self.play(AnimationGroup(
+                MoveAlongPath(triangle,rota1),
+                MoveAlongPath(circle,rota2),
+                MoveAlongPath(square,rota3),
+                run_time=2.5,
+                rate_func=linear
+            ))
 
             
         
