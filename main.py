@@ -1,16 +1,41 @@
 from manim import *
 from manim_slides import Slide
 
-def blocoCargo(cargo,nome):
-    cargoText=Text(cargo,font_size=20)
-    nomeText=Text(nome,font_size=10)
-    nomeText.next_to(cargoText,DOWN)
+def escalaFonte(texto):
+    # Escala o código para resolver um bug interno do Manim com Fontes customizadas
+    out = Text(texto, font_size=72)
+    out.scale(1/3)
 
-    return Group(cargoText,nomeText)
+    return out
+
+def blocoCargo(cargo,nome):
+    cargoText=escalaFonte(cargo)
+    cargoText.font_size=26
+
+    nomes = nome.split("\n")
+    nome_objs = []
+
+    dist = cargoText    # Distancia
+
+    # Isso aqui é uma gambiarra para poder centralizar nomes separados por "\n" para casos de um cargo com vários nomes
+    for linha in nomes:                                  # Separou anteriormente cada nome
+        nomeText = escalaFonte(linha) 
+        nomeText.font_size = 16
+        
+        # Centraliza horizontalmente
+        nomeText.move_to([cargoText.get_x(), dist.get_bottom()[1] - 0.3, 0])
+
+        nome_objs.append(nomeText)  # Coloca no vetor
+        dist = nomeText # Atualiza distancia de referencia para esse novo nome já ajeitado
+
+    return Group(cargoText, *nome_objs)
 
 def blocoQrCode(preview,qrCode):
     qrCode.scale(0.2)
-    previewQrCode=Text(preview,font_size=20)
+
+    previewQrCode=escalaFonte(preview)
+    previewQrCode.color="#AA77C7"
+    previewQrCode.font_size=30
     previewQrCode.next_to(qrCode,UP)
 
     return Group(qrCode,previewQrCode)
@@ -22,13 +47,15 @@ class main(Scene):
 
         # ------------------------- OBJETOS ---------------------------
         # Os nomes e cargos em si
-        titulo=Tex("Creditos")
+        titulo=escalaFonte("Creditos")
+        titulo.color="#AA77C7"
+        titulo.font_size=30
 
         blocos=[ 
                  blocoCargo("Diretor","Alguém Ai"),
                  blocoCargo("Tutor","Fulano de tal"),
                  blocoCargo("Redator","Fulaninho"),
-                 blocoCargo("Manimators","Aquele cara \n\nAquele outro cara lá")
+                 blocoCargo("Manimators","Aquele cara \nAquele outro cara lá")
                 ]
         
         creditos=Group(titulo)
@@ -42,7 +69,7 @@ class main(Scene):
         blocos=[
             blocoQrCode("Youtube", ImageMobject("/home/autumn/Imagens/Never1.png")),
             blocoQrCode("Moodle", ImageMobject("/home/autumn/Imagens/Never1.png")),
-            blocoQrCode("Discord", ImageMobject("/home/autumn/Imagens/Never1.png"))
+            #blocoQrCode("Discord", ImageMobject("/home/autumn/Imagens/Never1.png"))
         ]
 
         qrCodes=Group()
@@ -83,8 +110,7 @@ class main(Scene):
                 self.play(
                     AnimationGroup(
                         grupoFlutuanteDireito.animate.shift(mov_dir),
-                        grupoFlutuanteEsquerdo.animate.shift(mov_esq),
-                        run_time=3
+                        grupoFlutuanteEsquerdo.animate.shift(mov_esq)
                     )
                 )
 
