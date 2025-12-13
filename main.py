@@ -41,8 +41,12 @@ class main(Scene):
         # O que quer que estivesse aqui antes
         exemplo=Text("Exemplo")
 
-        # O triangulo da vinheta 
-        triangle = Triangle(color="#0A0A0A", fill_opacity=1).move_to(UP*6)
+        # Caractere {
+        charEsquerda=Text("{", font_size=72, stroke_width=10).move_to(LEFT*8)
+        charEsquerda.color="#AA77C7"
+        # Caractere }
+        charDireita=Text("}", font_size=72, stroke_width=10).move_to(RIGHT*8)
+        charDireita.color="#AA77C7"
         
         # Os nomes e cargos em si
         titulo=escalaFonte("Creditos")
@@ -63,12 +67,26 @@ class main(Scene):
             creditos.add(bloco)
             dist=bloco
         # ------------------------ ANIMAÇÕES ---------------------
+        # O que quer que existia antes
         self.add(exemplo)
-        always_rotate(triangle, rate=2*PI/2)
-        self.play(triangle.animate.move_to(ORIGIN))
+
+        # Ei! Puxa a vinheta!
         self.play(
-            triangle.animate.scale(100)
+            AnimationGroup(
+                charEsquerda.animate.move_to(LEFT),
+                charDireita.animate.move_to(RIGHT)
+            ))
+        
+        self.play(
+            AnimationGroup(
+                charEsquerda.animate.shift(LEFT*1.5),
+                charDireita.animate.shift(RIGHT*1.5),
+                run_time=0.8,
+                rate_func=linear
+            )
         )
+        
+        self.play(GrowFromCenter(Rectangle(color="#0F0F0F", fill_opacity=1, width=20, height=10)),run_time=0.5,rate_func=linear)
         
         # Nomes e Cargos
         self.play(AnimationGroup(FadeIn(creditos.move_to(ORIGIN))))
