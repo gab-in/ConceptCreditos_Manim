@@ -42,7 +42,8 @@ class main(Scene):
         exemplo=Text("Exemplo")
 
         # O triangulo da vinheta 
-        triangle = Triangle(color="#0A0A0A", fill_opacity=1).move_to(UP*6)
+        triangle1 = Triangle(color="#0F0F0F",stroke_width=10).move_to(UP*6)
+        triangle2 = Triangle(color="#0F0F0F", fill_opacity=1).move_to(DOWN*3)
         
         # Os nomes e cargos em si
         titulo=escalaFonte("Creditos")
@@ -64,10 +65,11 @@ class main(Scene):
             dist=bloco
         # ------------------------ ANIMAÇÕES ---------------------
         self.add(exemplo)
-        always_rotate(triangle, rate=2*PI/2)
-        self.play(triangle.animate.move_to(ORIGIN))
+        always_rotate(triangle1, rate=2*PI/2)
+        self.play(triangle1.animate.move_to(DOWN*3.5))
+        self.play(Transform(triangle1,triangle2))
         self.play(
-            triangle.animate.scale(100)
+            ScaleInPlace(triangle2, 30)
         )
         
         # Nomes e Cargos
