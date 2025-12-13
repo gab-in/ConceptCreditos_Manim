@@ -1,13 +1,14 @@
 from manim import *
 from manim_slides import Slide
 
+# Escala a fonte para resolver um bug interno do Manim com Fontes customizadas
 def escalaFonte(texto):
-    # Escala o código para resolver um bug interno do Manim com Fontes customizadas
     out = Text(texto, font_size=72)
     out.scale(1/3)
 
     return out
 
+# Toma conte de organizar os cargos
 def blocoCargo(cargo,nome):
     cargoText=escalaFonte(cargo)
     cargoText.font_size=26
@@ -41,8 +42,11 @@ class main(Scene):
         # O que quer que estivesse aqui antes
         exemplo=Text("Exemplo")
 
-        # O triangulo da vinheta 
-        triangle = Triangle(color="#0A0A0A", fill_opacity=1).move_to(UP*6)
+        # A logo
+        logo = ImageMobject("/home/autumn/Downloads/icon_c.png").scale(0.2)
+        logoOrigin=logo.copy().move_to(UP*8).rotate(PI)
+        # O cursor
+        cursor=ImageMobject("/home/autumn/Downloads/cursor.png").move_to(DOWN*6+LEFT*2).scale(0.05)
         
         # Os nomes e cargos em si
         titulo=escalaFonte("Creditos")
@@ -63,11 +67,24 @@ class main(Scene):
             creditos.add(bloco)
             dist=bloco
         # ------------------------ ANIMAÇÕES ---------------------
+        # O que quer que tivesse aqui antes
         self.add(exemplo)
-        always_rotate(triangle, rate=2*PI/2)
-        self.play(triangle.animate.move_to(ORIGIN))
+
+        # Abandonei o giro; o manim limita as ações nesse sentido, não dá para usar as constantes Rotate() e move_to() simultaneamente
+        # e os métodos que eu encontrei de fazer girar tornam o tempo da animação instável. Sempre cai fora do tempo que eu queria
         self.play(
-            triangle.animate.scale(100)
+            logoOrigin.animate.become(logo),
+            run_time=2
+        )
+
+        # Cursor aparece e se move
+        self.play(cursor.animate.move_to(ORIGIN+RIGHT*0.2+DOWN*0.2))
+        self.play(cursor.animate.scale(0.8),run_time=0.1,rate_func=linear)  # Clica
+        self.play(cursor.animate.scale(1.2),run_time=0.1,rate_func=linear)  #
+        
+        # Vinheta Puxada
+        self.play(
+            GrowFromCenter(Rectangle(color="#0A0A0A",fill_opacity=1,width=20, height=10),run_time=0.5)
         )
         
         # Nomes e Cargos
