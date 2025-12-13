@@ -38,6 +38,12 @@ class main(Scene):
         Text.set_default(font = "Manrope")
 
         # ------------------------- OBJETOS ---------------------------
+        # O que quer que estivesse aqui antes
+        exemplo=Text("Exemplo")
+
+        # O triangulo da vinheta 
+        triangle = Triangle(color="#0A0A0A", fill_opacity=1).move_to(UP*6)
+        
         # Os nomes e cargos em si
         titulo=escalaFonte("Creditos")
         titulo.color="#AA77C7"
@@ -56,8 +62,14 @@ class main(Scene):
             bloco.move_to(dist.get_bottom() + DOWN)
             creditos.add(bloco)
             dist=bloco
-
         # ------------------------ ANIMAÇÕES ---------------------
+        self.add(exemplo)
+        always_rotate(triangle, rate=2*PI/2)
+        self.play(triangle.animate.move_to(ORIGIN))
+        self.play(
+            triangle.animate.scale(100)
+        )
+        
         # Nomes e Cargos
         self.play(AnimationGroup(FadeIn(creditos.move_to(ORIGIN))))
             
