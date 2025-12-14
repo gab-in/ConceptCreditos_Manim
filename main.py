@@ -1,43 +1,10 @@
 from manim import *
 from manim_slides import Slide
-
-# Escala a fonte para resolver um bug interno do Manim com Fontes customizadas
-def escalaFonte(texto):
-    out = Text(texto, font_size=72)
-    out.scale(1/3)
-
-    return out
-
-# Toma conte de organizar os cargos
-def blocoCargo(cargo,nome):
-    cargoText=escalaFonte(cargo)
-    cargoText.font_size=26
-
-    nomes = nome.split("\n")
-    nome_objs = []
-
-    dist = cargoText    # Distancia
-
-    # Isso aqui é uma gambiarra para poder centralizar nomes separados por "\n" para casos de um cargo com vários nomes
-    for linha in nomes:                                  # Separou anteriormente cada nome
-        nomeText = escalaFonte(linha) 
-        nomeText.font_size = 16
-        
-        # Centraliza horizontalmente
-        nomeText.move_to([cargoText.get_x(), dist.get_bottom()[1] - 0.3, 0])
-
-        nome_objs.append(nomeText)  # Coloca no vetor
-        dist = nomeText # Atualiza distancia de referencia para esse novo nome já ajeitado
-
-    return Group(cargoText, *nome_objs)
-
+config.background_color="#1E1E1E"
+Text.set_default(font = "Manrope")
 
 class main(Scene):
     def construct(self):
-        # ------------------------- CONFIGURAÇÕES? -------------------------
-        self.camera.background_color="#1E1E1E"
-        Text.set_default(font = "Manrope")
-
         # ------------------------- OBJETOS ---------------------------
         # O que quer que estivesse aqui antes
         exemplo=Text("Exemplo")
@@ -49,23 +16,15 @@ class main(Scene):
         cursor=ImageMobject("/home/autumn/Downloads/cursor.png").move_to(DOWN*6+LEFT*2).scale(0.05)
         
         # Os nomes e cargos em si
-        titulo=escalaFonte("Creditos")
+        titulo=Text("Créditos", font_size=80)
         titulo.color="#AA77C7"
-        titulo.font_size=30
-
-        blocos=[ 
-                 blocoCargo("Diretor","Alguém Ai"),
-                 blocoCargo("Tutor","Fulano de tal"),
-                 blocoCargo("Redator","Fulaninho"),
-                 blocoCargo("Manimators","Aquele cara \nAquele outro cara lá")
-                ]
+ 
+        diretor = VGroup(Text("Diretor", font_size=60), Text("Alguém Ai", font_size=50)).arrange(DOWN, buff=0.3)
+        tutor = VGroup(Text("Tutor", font_size=60), Text("Fulano de tal", font_size=50)).arrange(DOWN, buff=0.3)
+        redator = VGroup(Text("Redator", font_size=60),Text("Fulaninho", font_size=50)).arrange(DOWN, buff=0.3)
+        manimator = VGroup(Text("Manimators", font_size=60),Text("Aquele cara", font_size=50), Text("Aquele outro cara lá", font_size=40)).arrange(DOWN, buff=0.3)
         
-        creditos=Group(titulo)
-        dist=titulo
-        for bloco in blocos:
-            bloco.move_to(dist.get_bottom() + DOWN)
-            creditos.add(bloco)
-            dist=bloco
+        creditos = VGroup(titulo, diretor, tutor, redator, manimator).arrange(DOWN, buff=1).scale(0.5)
         # ------------------------ ANIMAÇÕES ---------------------
         # O que quer que tivesse aqui antes
         self.add(exemplo)
