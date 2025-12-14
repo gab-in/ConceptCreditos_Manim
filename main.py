@@ -3,7 +3,7 @@ from manim_slides import Slide
 config.background_color="#1E1E1E"
 Text.set_default(font = "Manrope")
 
-class main(Scene):
+class Creditos(Scene):
     def construct(self):
         # ------------------------- OBJETOS ---------------------------
         # O que quer que estivesse aqui antes
@@ -37,7 +37,7 @@ class main(Scene):
         )
 
         # Cursor aparece e se move
-        self.play(cursor.animate.move_to(ORIGIN+RIGHT*0.2+DOWN*0.2))
+        self.play(cursor.animate.move_to(ORIGIN+RIGHT*0.25+DOWN*0.45))
         self.play(cursor.animate.scale(0.8),run_time=0.1,rate_func=linear)  # Clica
         self.play(cursor.animate.scale(1.2),run_time=0.1,rate_func=linear)  #
         
