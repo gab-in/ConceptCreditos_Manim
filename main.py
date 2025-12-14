@@ -1,83 +1,45 @@
 from manim import *
 from manim_slides import Slide
+config.background_color="#1E1E1E"
+Text.set_default(font = "Manrope")
 
-def escalaFonte(texto):
-    # Escala o código para resolver um bug interno do Manim com Fontes customizadas
-    out = Text(texto, font_size=72)
-    out.scale(1/3)
-
-    return out
-
-def blocoCargo(cargo,nome):
-    cargoText=escalaFonte(cargo)
-    cargoText.font_size=26
-
-    nomes = nome.split("\n")
-    nome_objs = []
-
-    dist = cargoText    # Distancia
-
-    # Isso aqui é uma gambiarra para poder centralizar nomes separados por "\n" para casos de um cargo com vários nomes
-    for linha in nomes:                                  # Separou anteriormente cada nome
-        nomeText = escalaFonte(linha) 
-        nomeText.font_size = 16
-        
-        # Centraliza horizontalmente
-        nomeText.move_to([cargoText.get_x(), dist.get_bottom()[1] - 0.3, 0])
-
-        nome_objs.append(nomeText)  # Coloca no vetor
-        dist = nomeText # Atualiza distancia de referencia para esse novo nome já ajeitado
-
-    return Group(cargoText, *nome_objs)
-
-
-class main(Scene):
+class Creditos(Scene):
     def construct(self):
-        # ------------------------- CONFIGURAÇÕES? -------------------------
-        self.camera.background_color="#1E1E1E"
-        Text.set_default(font = "Manrope")
 
         # ------------------------- OBJETOS ---------------------------
         # O que quer que estivesse aqui antes
         exemplo=Text("Exemplo")
 
         # O triangulo da vinheta 
-        triangle1 = Triangle(color="#0F0F0F",stroke_width=10).move_to(UP*6)
-        triangle2 = Triangle(color="#0F0F0F", fill_opacity=1).move_to(DOWN*3)
+        triangle1 = Triangle(color="#0F0F0F",stroke_width=8).move_to(UP*6)
+        triangle2 = Triangle(color="#0F0F0F", fill_opacity=1).move_to(DOWN*2.5)
         
         # Os nomes e cargos em si
-        titulo=escalaFonte("Creditos")
+        titulo=Text("Créditos", font_size=80)
         titulo.color="#AA77C7"
-        titulo.font_size=30
-
-        blocos=[ 
-                 blocoCargo("Diretor","Alguém Ai"),
-                 blocoCargo("Tutor","Fulano de tal"),
-                 blocoCargo("Redator","Fulaninho"),
-                 blocoCargo("Manimators","Aquele cara \nAquele outro cara lá")
-                ]
+ 
+        diretor = VGroup(Text("Diretor", font_size=60), Text("Alguém Ai", font_size=50)).arrange(DOWN, buff=0.3)
+        tutor = VGroup(Text("Tutor", font_size=60), Text("Fulano de tal", font_size=50)).arrange(DOWN, buff=0.3)
+        redator = VGroup(Text("Redator", font_size=60),Text("Fulaninho", font_size=50)).arrange(DOWN, buff=0.3)
+        manimator = VGroup(Text("Manimators", font_size=60),Text("Aquele cara", font_size=50), Text("Aquele outro cara lá", font_size=40)).arrange(DOWN, buff=0.3)
         
-        creditos=Group(titulo)
-        dist=titulo
-        for bloco in blocos:
-            bloco.move_to(dist.get_bottom() + DOWN)
-            creditos.add(bloco)
-            dist=bloco
+        creditos = VGroup(titulo, diretor, tutor, redator, manimator).arrange(DOWN, buff=1).scale(0.5)
+
         # ------------------------ ANIMAÇÕES ---------------------
         self.add(exemplo)
-        always_rotate(triangle1, rate=2*PI/2)
-        self.play(triangle1.animate.move_to(DOWN*3.5))
+        always_rotate(triangle1, rate=PI)
+        self.play(triangle1.animate.shift(DOWN*8))
         self.play(Transform(triangle1,triangle2))
+        self.remove(triangle1)
         self.play(
             ScaleInPlace(triangle2, 30)
         )
         
         # Nomes e Cargos
-        self.play(AnimationGroup(FadeIn(creditos.move_to(ORIGIN))))
+        self.play(FadeIn(creditos))
+        self.wait()
             
         
 
         
-
-
 
