@@ -19,12 +19,14 @@ class Creditos(Scene):
         titulo=Text("Créditos", font_size=80)
         titulo.color="#AA77C7"
  
-        diretor = VGroup(Text("Diretor", font_size=60), Text("Alguém Ai", font_size=50)).arrange(DOWN, buff=0.3)
-        tutor = VGroup(Text("Tutor", font_size=60), Text("Fulano de tal", font_size=50)).arrange(DOWN, buff=0.3)
-        redator = VGroup(Text("Redator", font_size=60),Text("Fulaninho", font_size=50)).arrange(DOWN, buff=0.3)
-        manimator = VGroup(Text("Manimators", font_size=60),Text("Aquele cara", font_size=50), Text("Aquele outro cara lá", font_size=40)).arrange(DOWN, buff=0.3)
+        diretor = Group(Text("Diretor", font_size=60), Text("Alguém Ai", font_size=50)).arrange(DOWN, buff=0.3)
+        tutor = Group(Text("Tutor", font_size=60), Text("Fulano de tal", font_size=50)).arrange(DOWN, buff=0.3)
+        redator = Group(Text("Redator", font_size=60),Text("Fulaninho", font_size=50)).arrange(DOWN, buff=0.3)
+        manimator = Group(Text("Manimators", font_size=60),Text("Aquele cara", font_size=50), Text("Aquele outro cara lá", font_size=40)).arrange(DOWN, buff=0.3)
+
+        utfpr= ImageMobject("/home/autumn/Downloads/utfpr.png").scale(0.7)
         
-        creditos = VGroup(titulo, diretor, tutor, redator, manimator).arrange(DOWN, buff=1).scale(0.5)
+        creditos = Group(titulo, diretor, tutor, redator, manimator,utfpr).arrange(DOWN, buff=1).scale(0.5)
         # ------------------------ ANIMAÇÕES ---------------------
         # O que quer que tivesse aqui antes
         self.add(exemplo)
